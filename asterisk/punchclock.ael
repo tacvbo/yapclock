@@ -1,0 +1,61 @@
+globals {
+  HELIOS_EXT=SIP/7071
+  HELIOS_IP=10.20.30.71
+  WS_PATH=/var/www/html/punch_clock
+};
+
+// Copyright 2010 Neocenter S.A. de C.V.
+// Distributed under the terms of the GNU General Public License v3
+// $Header: $
+//
+// Yet another Punch Clock solution for Asterisk and Elastix
+//        to work with 2N Helios door communicator
+//
+// Author:
+//       Octavio Ruiz (Ta^3) <tacvbo@tacvbo.net>
+//
+// http://github.com/tacvbo/yapclock
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY. YOU USE AT YOUR OWN RISK. THE AUTHOR
+// WILL NOT BE LIABLE FOR DATA LOSS, DAMAGES, LOSS OF PROFITS OR ANY
+// OTHER  KIND OF LOSS WHILE USING OR MISUSING THIS SOFTWARE.
+// See the GNU General Public License for more details.
+
+
+context punch_clock {
+
+  565656 => { goto phck,1; }
+
+  phck => {
+    Answer();
+    CALLERID(num)=;
+    CALLERID(name)=;
+    Playback(welcome);
+    VMAuthenticate(@default);
+    Set(DATE_FRP="${STRFTIME(${EPOCH},,%F_%R %p)}");
+    Set(DATE_KMP="${CUT(DATE_FRP,_,2)}");
+    Set(DATE_FR="${CUT(DATE_FRP, ,1)}");
+    Set(DATE_F="${CUT(DATE_FR,_,1)}");
+    System(/usr/bin/wget -cqO ${WS_PATH}/img/${DATE_FR}_${AUTH_MAILBOX}.jpg http://${HELIOS_IP}/enu/camera320x240.jpg);
+    System(/bin/echo " <tr class=row>" >> ${WS_PATH}/data/${DATE_F}_data.html);
+    System(/bin/echo "    <td>${DATE_F}</td>" >> ${WS_PATH}/data/${DATE_F}_data.html);
+    System(/bin/echo "    <td>" >> ${WS_PATH}/data/${DATE_F}_data.html);
+    System(/bin/echo "       <img class=thumb src="img/${DATE_FR}_${AUTH_MAILBOX}.jpg" />" >> ${WS_PATH}/data/${DATE_F}_data.html);
+    System(/bin/echo "       <img class="large" src="img/${DATE_FR}_${AUTH_MAILBOX}.jpg" />" >> ${WS_PATH}/data/${DATE_F}_data.html);
+    System(/bin/echo "    </td>" >> ${WS_PATH}/data/${DATE_F}_data.html);
+    System(/bin/echo "    <td>${DB(AMPUSER/${AUTH_MAILBOX}/cidname)}</td>" >> ${WS_PATH}/data/${DATE_F}_data.html);
+    System(/bin/echo "    <td>${AUTH_MAILBOX}</td>" >> ${WS_PATH}/data/${DATE_F}_data.html);
+    System(/bin/echo "    <td>${DATE_KMP}</td>" >> ${WS_PATH}/data/${DATE_F}_data.html);
+    System(/bin/echo " </tr>" >> ${WS_PATH}/data/${DATE_F}_data.html);
+    Playback(at-tone-time-exactly);
+    System(/usr/sbin/rasterisk -x 'originate Local/answer@punch_clock application Dial ${HELIOSEXT}||D(w0*)L(7000)');
+    SayUnixTime(,America/Mexico_City,IMp);
+    Hangup();
+  }
+
+  answer => {
+    Answer();
+    Wait(15);
+  }
+}

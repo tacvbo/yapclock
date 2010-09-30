@@ -1,0 +1,109 @@
+/*
+ * Copyright 2010 Neocenter S.A. de C.V.                             
+ * Distributed under the terms of the GNU Affero General Public License v3  
+ * $Header: $                                                        
+ *                                                                   
+ * Yet another Punch Clock solution for Asterisk and Elastix         
+ *        to work with 2N Helios door communicator                   
+ *                                                                   
+ * Author:                                                           
+ *       Octavio Ruiz (Ta^3)   tacvbo@tacvbo.net                     
+ *                                                                   
+ * http://github.com/tacvbo/yapclock                                 
+ *                                                                   
+ * This program is distributed in the hope that it will be useful,   
+ * but WITHOUT ANY WARRANTY. YOU USE AT YOUR OWN RISK. THE AUTHOR    
+ * WILL NOT BE LIABLE FOR DATA LOSS, DAMAGES, LOSS OF PROFITS OR ANY 
+ * OTHER  KIND OF LOSS WHILE USING OR MISUSING THIS SOFTWARE.        
+ * See the GNU Affero General Public License for more details.              
+ */
+
+body, html {
+  background-color: lightblue;
+  font: normal normal normal 1em/1.5em Helvetica, sans-serif;
+}
+pre { font-family: monospace;}
+
+
+#pagewrap {
+  margin-left:450px;
+  width: 500px;
+ }
+
+ #search {
+   -webkit-border-radius: 10px;
+   background-color: white;
+   padding: 10px;
+   position: fixed;
+   float:left;
+   left:40px;
+   display: none;
+ }
+
+
+ #body {
+
+ }
+ table {
+   background-color: white;
+   -webkit-border-radius: 10px;
+   width: 100%;
+   padding: 10px;
+  }
+  th.sortable {
+    color: #666;
+    cursor: pointer;
+    text-decoration: underline;
+         }
+         th.sortable:hover { color: black; }
+         th.sorted-asc, th.sorted-desc  { color: black; }
+
+         td {
+           background-color: #ededed;
+         }
+         td.odd {
+           background-color: #666;
+           color: white;
+         }
+
+         td.hovered {
+           background-color: lightblue;
+           color: #666;
+         }
+
+
+         img.large {
+           border: 0px;
+           display: block;
+           height: 1px;
+           left: -1px;
+           position: absolute;
+           top: -1px;
+           width: 1px;
+           padding: 5px;
+           border: 0px;
+           margin: -6px 6px 6px -6px;
+}
+
+img.thumb{
+  width: 100px; height: 75px;
+  border: 0px;
+}
+
+tr.row td {
+  text-align: center;
+
+}
+
+tr.row:hover {
+  color: #000000;
+  text-decoration: none;
+}
+
+tr.row:hover .large {
+  display: block;
+  width: 320px; height: 240px;
+  top: 123px;
+  left: 78px;
+  position: fixed;
+}
