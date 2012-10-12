@@ -1,6 +1,6 @@
 globals {
-  HELIOS_EXT=SIP/7071
-  HELIOS_IP=10.20.30.71
+  HELIOS_EXT=SIP/helios
+  HELIOS_IP=192.168.1.200
   WS_PATH=/var/www/html/punch_clock
 };
 
@@ -33,10 +33,10 @@ context punch_clock {
     CALLERID(name)=;
     Playback(welcome);
     VMAuthenticate(@default);
-    Set(DATE_FRP="${STRFTIME(${EPOCH},,%F_%R %p)}");
-    Set(DATE_KMP="${CUT(DATE_FRP,_,2)}");
-    Set(DATE_FR="${CUT(DATE_FRP, ,1)}");
-    Set(DATE_F="${CUT(DATE_FR,_,1)}");
+    Set(DATE_FRP=${STRFTIME(${EPOCH},,%F_%R %p)});
+    Set(DATE_KMP=${CUT(DATE_FRP,_,2)});
+    Set(DATE_FR=${CUT(DATE_FRP, ,1)});
+    Set(DATE_F=${CUT(DATE_FR,_,1)});
     System(/usr/bin/wget -cqO ${WS_PATH}/img/${DATE_FR}_${AUTH_MAILBOX}.jpg http://${HELIOS_IP}/enu/camera320x240.jpg);
     System(/bin/echo " <tr class=row>" >> ${WS_PATH}/data/${DATE_F}_data.html);
     System(/bin/echo "    <td>${DATE_F}</td>" >> ${WS_PATH}/data/${DATE_F}_data.html);
